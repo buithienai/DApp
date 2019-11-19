@@ -3,10 +3,10 @@ package dapp.dapp.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Indexed;
 
 import java.math.BigInteger;
 import java.util.Date;
@@ -31,7 +31,7 @@ public class BCTransaction {
     @Id
     private String id;
 
-    @Field("transaction_id")
+    @Indexed(name ="transaction_id")
     private String transactionId;
 
     @Field("chain_id")
