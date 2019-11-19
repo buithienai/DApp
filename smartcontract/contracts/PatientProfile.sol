@@ -11,4 +11,13 @@ contract PatientProfile {
         _patientData = patienData;
     }
 
+
+    function getPatientProfile() public view returns (bytes32) {
+        return _patientData;
+    }
+
+    function getCreator() public view returns(address) {
+        return _creator;
+    }
+
 }

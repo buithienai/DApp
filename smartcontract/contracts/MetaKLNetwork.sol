@@ -12,7 +12,7 @@ contract MetaKLNetwork is Factory{
     IUserRoles public _userRoles;
     mapping(uint => address) public registeredProfile;
 
-    uint256 public _level = 6;
+    uint public _level = 6;
 
     bool public _initialized = false;
 
@@ -23,11 +23,17 @@ contract MetaKLNetwork is Factory{
 
     mapping(uint => PatientData) _pendingPatientProfile;
 
+
+
+
     struct PatientData{
         bytes32 patientData;
         bool executed;
     }
 
+
+
+    event Voting(address _sender, uint _point);
 
     function initialize(IUserRoles userRoles, uint256 level, address relay) public {
         require(! _initialized);
@@ -37,6 +43,7 @@ contract MetaKLNetwork is Factory{
         _initialized = true;
 
     }
+
 
 
 
@@ -83,7 +90,7 @@ contract MetaKLNetwork is Factory{
         } else {
             _voteNumber[_profileCount] = 2;
         }
-
+        emit Voting(sender, _voteNumber[_profileCount]);
 
 
         _pendingPatientProfile[_profileCount] = PatientData({
@@ -100,12 +107,14 @@ contract MetaKLNetwork is Factory{
     {
         require(_userRoles.isValidIndexAccount(indexRole, sender));
         if(indexRole == 1) {
-            _voteNumber[_profileId] = 5;
+            _voteNumber[_profileId] += 5;
         } else if(indexRole == 2) {
-            _voteNumber[_profileId] = 3;
+            _voteNumber[_profileId] += 3;
         } else {
-            _voteNumber[_profileId] = 2;
+            _voteNumber[_profileId] += 2;
         }
+
+        emit Voting(sender, _voteNumber[_profileId]);
 
         _execute(sender, _profileId);
 
