@@ -21,9 +21,9 @@ contract MetaKLNetwork is Factory{
     mapping(uint => uint) public _voteNumber;
     uint public _profileCount;
 
-    mapping(uint => patientProfile) _pendingPatientProfile;
+    mapping(uint => PatientData) _pendingPatientProfile;
 
-    struct patientProfile{
+    struct PatientData{
         bytes32 patientData;
         bool executed;
     }
@@ -86,21 +86,38 @@ contract MetaKLNetwork is Factory{
 
 
 
-        _pendingPatientProfile[_profileCount] = patientProfile({
+        _pendingPatientProfile[_profileCount] = PatientData({
                patientData:_patientData,
-               excuted:false
+               executed:false
             });
-        _execute(_profileCount);
+        _execute(sender, _profileCount);
 
     }
 
 
-    function _execute(uint _profileId)
+    function voteProfile(address sender, uint8 indexRole, uint _profileId)
+    public
+    {
+        require(_userRoles.isValidIndexAccount(indexRole, sender));
+        if(indexRole == 1) {
+            _voteNumber[_profileId] = 5;
+        } else if(indexRole == 2) {
+            _voteNumber[_profileId] = 3;
+        } else {
+            _voteNumber[_profileId] = 2;
+        }
+
+        _execute(sender, _profileId);
+
+    }
+
+
+    function _execute(address sender, uint _profileId)
     internal
     {
 
         if(_voteNumber[_profileId] >= _level) {
-            registeredProfile[_profileId] = _createPatientProfile(_profileId);
+            registeredProfile[_profileId] = _createPatientProfile(sender, _profileId);
 
         }
     }
@@ -109,11 +126,11 @@ contract MetaKLNetwork is Factory{
     /**
     *@dev create patien profile
     */
-    function _createPatientProfile(uint _profileId)
+    function _createPatientProfile(address sender, uint _profileId)
     internal
     returns( address)
     {
-        patientProfile storage _patient = _patientProfile[_profileId];
+        PatientData storage _patient = _pendingPatientProfile[_profileId];
 
         PatientProfile  createdPatientProfile = new PatientProfile(address(this), _patient.patientData);
         register(sender, address(createdPatientProfile));
