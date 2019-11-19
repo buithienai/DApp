@@ -2,3 +2,11 @@ smartcontract/.idea/*
 smartcontract/node_modules/*
 smartcontract/build/*
 smartcontract/contracts/.DS_Store
+
+dapp/target/*
+dapp/.mvn/*
+dapp/.idea/*
+.DS_Store
+dapp/mvnw
+dapp/mvnw.cmd
+dapp/src/main/java/dapp/dapp/.DS_Store
