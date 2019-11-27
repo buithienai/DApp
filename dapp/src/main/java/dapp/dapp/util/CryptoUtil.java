@@ -82,11 +82,6 @@ public class CryptoUtil {
         }
         signatureDto.setSender(signedAddress);
 
-        /// convert
-        if(signatureDto.getIsHardwareWallet() == 1) {
-            signatureDto.setHardwareWallet2(true);
-        }
-
         return true;
 
     }
@@ -133,7 +128,14 @@ public class CryptoUtil {
     public static boolean isValidEthereumAddress(String addr) {
        //return true;
        /// need to fix bug
-        return  isValidAddress(addr);
+        return  isValidAddress(addr) && isCheckSubAddress(addr) ;
+    }
+
+
+
+    public static boolean isCheckSubAddress(String address) {
+        String checkSumAddress = Keys.toChecksumAddress(address);
+        return checkSumAddress.equals(address);
     }
 
     /* input : Address
@@ -158,78 +160,6 @@ public class CryptoUtil {
         }
         return false;
     }
-
-
-    /* input : Address
-     * Output: true or false
-     * purpose: to validate a checksum an Ethereum Address
-     * Actual Checksum Procedure :
-     * If the ith digit of the Address is a letter (ie. it's one of abcdef) print it in uppercase
-     * if the ith bit of the hash of the address (in binary form) is 1
-     * otherwise print it in lowercase.
-     *
-     * Ref URL: https://github.com/ethereum/EIPs/issues/55
-     */
-
-    public static boolean isChecksumAddress(String addr)
-    {
-        //Print for testing purpose and more verbose output
-        logger.info("Incoming Address " + addr);
-
-        // First we need to check the address has the value between 0-9a-fA-F
-        String regex = "^0x[0-9a-fA-F]{40}$";
-        if(!addr.matches(regex))
-        {
-            return false;
-        }
-
-        //to fetch the part after 0x
-        String subAddr = addr.substring(2);
-        //Make it to original lower case address
-        String subAddrLower = subAddr.toLowerCase();
-
-        //Print for testing purpose and more verbose output
-        logger.info("Fetched Original Address " + subAddrLower);
-
-        // if the previous step validates then we will test the checksum part
-
-        // Create a SHA3256 hash (Keccak-256)
-        SHA3.DigestSHA3 digestSHA3 = new SHA3.Digest256();
-        digestSHA3.update(subAddrLower.getBytes());
-        String digestMessage = Hex.toHexString(digestSHA3.digest());
-
-        //Print for testing purpose and more verbose output
-        logger.info("Hex String " + digestMessage);
-
-        /* Check each letter is upper case or not
-         * if it is upper case then the corresponding binary position of the hashed address
-         * should be 1 i.e the message digest letter should be getter than 7
-         * as 7 is the last Hex digit which starts with 0 in binary
-         * rest of all 8 to f starts with 1
-         */
-
-        for(short i=0 ;i < subAddr.length();i++)
-        {
-            if(subAddr.charAt(i)>=65 && subAddr.charAt(i)<=91)
-            {
-
-                logger.info("Position Upper " + (subAddr.charAt(i)) );
-                logger.info("Position digest " + (digestMessage.charAt(i)));
-
-                String ss = Character.toString(digestMessage.charAt(i));
-                if(!(Integer.parseInt(ss,16) > 7 ))
-                {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-
-
-
-    }
-
 
     /**
      *

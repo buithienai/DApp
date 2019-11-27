@@ -10,22 +10,16 @@ public class SignatureDto {
 
     SignedMessageDto signedMessage;
 
-    private String messageData;
-    private String messageHash;
-    private BigInteger nonce;
     private String destinationAddress;
 
     private String rawMessage;
 
-    private String data;
-
-    private String transactionData;
-
     private String sender;
 
-    private int isHardwareWallet;
 
-    private boolean isHardwareWallet2;
+    private String messageHash;
+
+    private boolean isHardwareWallet;
 
     public SignedMessageDto getSignedMessage() {
         return signedMessage;
@@ -36,32 +30,6 @@ public class SignatureDto {
         return this;
     }
 
-    public String getMessageData() {
-        return messageData;
-    }
-
-    public SignatureDto setMessageData(String messageData) {
-        this.messageData = messageData;
-        return this;
-    }
-
-    public String getMessageHash() {
-        return messageHash;
-    }
-
-    public SignatureDto setMessageHash(String messageHash) {
-        this.messageHash = messageHash;
-        return this;
-    }
-
-    public BigInteger getNonce() {
-        return nonce;
-    }
-
-    public SignatureDto setNonce(BigInteger nonce) {
-        this.nonce = nonce;
-        return this;
-    }
 
     public String getDestinationAddress() {
         return destinationAddress;
@@ -101,39 +69,21 @@ public class SignatureDto {
         return this;
     }
 
-    public String getData() {
-        return data;
-    }
-
-    public SignatureDto setData(String data) {
-        this.data = data;
-        return this;
-    }
-
-    public String getTransactionData() {
-        return transactionData;
-    }
-
-    public SignatureDto setTransactionData(String transactionData) {
-        this.transactionData = transactionData;
-        return this;
-    }
-
-    public int getIsHardwareWallet() {
+    public boolean isHardwareWallet() {
         return isHardwareWallet;
     }
 
-    public SignatureDto setIsHardwareWallet(int isHardwareWallet) {
-        this.isHardwareWallet = isHardwareWallet;
+    public SignatureDto setHardwareWallet(boolean hardwareWallet) {
+        isHardwareWallet = hardwareWallet;
         return this;
     }
 
-    public boolean isHardwareWallet2() {
-        return isHardwareWallet2;
+    public String getMessageHash() {
+        return messageHash;
     }
 
-    public SignatureDto setHardwareWallet2(boolean hardwareWallet2) {
-        isHardwareWallet2 = hardwareWallet2;
+    public SignatureDto setMessageHash(String messageHash) {
+        this.messageHash = messageHash;
         return this;
     }
 }
