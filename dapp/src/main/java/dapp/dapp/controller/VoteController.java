@@ -113,7 +113,7 @@ public class VoteController {
                 }
             }
 
-            resultData.put("ipfsHash",ipfHashList);
+            resultData.put("ipfHash",ipfHashList);
             return resultData;
 
         } catch (Exception e) {
