@@ -4,9 +4,9 @@ import { Route, Link } from 'react-router-dom';
 const Header = () => (
   <div className="text-center">
     <nav className="navbar navbar-default">
-      <Link to="/" activeClassName="active">Home</Link>
+      <Link to="/" className="active">Home</Link>
       {" | "}
-      <Link to="library" activeClassName="active">Library</Link>
+      <Link to="library" className="active">Library</Link>
     </nav>
   </div>
 );

@@ -1,5 +1,5 @@
-import React, {  Component } from 'react';
-import {PropTypes} from 'prop-types';
+import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 
 import { connect } from 'react-redux';
 import {
@@ -9,6 +9,7 @@ import {
 import PhotosPage from '../components/PhotosPage';
 import VideosPage from '../components/VideosPage';
 import '../assets/css/main.css';
+import App from './App';
 
 
 export class MediaGalleryPage extends Component {
@@ -42,32 +43,34 @@ export class MediaGalleryPage extends Component {
   render() {
     const { images, selectedImage, videos, selectedVideo } = this.props;
     return (
-      <div className="container-fluid">
-        {images && selectedImage ? <div>
-          <input
-            type="text"
-            ref={ref => (this.query = ref)}
-          />
-          <input
-            type="submit"
-            className="btn btn-primary"
-            value="Search Library"
-            onClick={this.handleSearch}
-          />
-          <div className="row">
-            <PhotosPage
-              images={images}
-              selectedImage={selectedImage}
-              onHandleSelectImage={this.handleSelectImage}
+      <App>
+        <div className="container-fluid">
+          {images && selectedImage ? <div>
+            <input
+              type="text"
+              ref={ref => (this.query = ref)}
             />
-            <VideosPage
-              videos={videos}
-              selectedVideo={selectedVideo}
-              onHandleSelectVideo={this.handleSelectVideo}
+            <input
+              type="submit"
+              className="btn btn-primary"
+              value="Search Library"
+              onClick={this.handleSearch}
             />
-          </div>
-        </div> : 'loading ....'}
-      </div>
+            <div className="row">
+              <PhotosPage
+                images={images}
+                selectedImage={selectedImage}
+                onHandleSelectImage={this.handleSelectImage}
+              />
+              <VideosPage
+                videos={videos}
+                selectedVideo={selectedVideo}
+                onHandleSelectVideo={this.handleSelectVideo}
+              />
+            </div>
+          </div> : 'loading ....'}
+        </div>
+      </App>
     );
   }
 }
