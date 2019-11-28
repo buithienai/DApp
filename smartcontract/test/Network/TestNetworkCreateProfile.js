@@ -137,6 +137,7 @@ contract("Integration test", function (accounts) {
 
     it(" create voteProfile and vote", async function() {
        const ipfsUserProfileData =  web3.utils.fromAscii("QmNYf5B9cpm3ZQerpbRsKnWqxpdGcpMDzkn4JRv6CW8un2");
+       console.log(ipfsUserProfileData);
        types = ['address', 'uint8' , 'bytes32'];
         params = [director, directorIndex,ipfsUserProfileData];
 
@@ -165,7 +166,7 @@ contract("Integration test", function (accounts) {
 
         (await patientProfile.getCreator.call()).should.be.equal(metaKLNetwork.address);
 
-       /// (await patientProfile.getPatientProfile.call()).should.be.equal(ipfsUserProfileData);
+        (await patientProfile.getPatientProfile.call()).should.be.equal(ipfsUserProfileData);
 
 
     })

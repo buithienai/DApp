@@ -15,7 +15,7 @@ contract OwnedUpgradeabilityProxy is UpgradeabilityProxy {
   event ProxyOwnershipTransferred(address previousOwner, address newOwner);
 
   // Storage position of the owner of the contract
-  bytes32 private constant proxyOwnerPosition = keccak256("kingsland.dapp.proxy.implementation");
+  bytes32 private constant proxyOwnerPosition = keccak256("kingsland.dapp.proxy.owner");
 
   /**
   * @dev the constructor sets the original owner of the contract to the sender account.
@@ -68,7 +68,7 @@ contract OwnedUpgradeabilityProxy is UpgradeabilityProxy {
    * @param implementation representing the address of the new implementation to be set.
    */
   function upgradeTo(address implementation) public
-  ///onlyProxyOwner
+  onlyProxyOwner
   {
     _upgradeTo(implementation);
   }

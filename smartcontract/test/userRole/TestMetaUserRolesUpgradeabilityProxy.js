@@ -87,32 +87,39 @@ contract ('Meta User Role Proxy upgradeable role', function (accounts) {
 
                    metaUserRoles = await MetaUserRoles.new({from:creator});
 
-                   proxy = await MetaUserRolesUpgradeProxy.new(devOp,{from: creator});
 
 
-                       var owner1 = await proxy.proxyOwner();
 
-                                          console.log("owner1 " + owner1 + "----" + creator + "----" + txRelay.address );
+                  // var owner1 = await proxy.proxyOwner();
+
+                    console.log("owner1 " + creator + "----" + creator + "----" + txRelay.address );
 
                    initializeData = encodeCall('initialize', ['address','address', 'address'], [superAdmin,operationAdmin, txRelay.address]);
 
+
+                   console.log(initializeData);
+
+                   proxy = await MetaUserRolesUpgradeProxy.new(devOp,{from: creator});
+                   var owner1 = await proxy.proxyOwner();
+                   console.log("meta user" + metaUserRoles.address + " - " + owner1 + "- " + superAdmin + " - " + operationAdmin);
+
                    metaUserRolesUpgrade = await MetaUserRolesUpgrade.new({from:creator});
 
-                    proxy.upgradeToAndCall(metaUserRoles.address, initializeData,{from:devOp});
+                    await proxy.upgradeToAndCall(metaUserRoles.address, initializeData,{from:devOp});
+                    //await proxy.transferProxyOwnership(devOp,{from: devOp});
+                    (await proxy.proxyOwner.call()).should.be.equal(devOp);
 
                      var owner = await proxy.proxyOwner();
 
                      console.log("owner " + owner);
 
                    implMetaUserRole = await MetaUserRoles.at(proxy.address);
-                   implMetaUserRoleUpgrade = await MetaUserRolesUpgrade.at(proxy.address);
-
                    var relayerResult = await implMetaUserRole._relay.call();
 
                    assert.equal(txRelay.address, relayerResult,"relayer address is incorrect");
-                    //var owner2 = await proxy.proxyOwner();
+                   var owner2 = await proxy.proxyOwner();
 
-                            //            console.log("owner2 " + owner2);
+                   console.log("owner2 " + owner2 + "-----devOp:" + devOp);
 
                   done()
                })
@@ -148,7 +155,7 @@ contract ('Meta User Role Proxy upgradeable role', function (accounts) {
 
           });
 
-       //  MetaUserRolesBehaviour(accounts);
+         MetaUserRolesBehaviour(accounts);
 
       })
 
@@ -175,7 +182,7 @@ contract ('Meta User Role Proxy upgradeable role', function (accounts) {
                    })
               })
 
-             /* describe("upgrade to another address", function() {
+           describe("upgrade to another address", function() {
                     before(async() => {
                           (await proxy.proxyOwner()).should.be.equal(devOp);
                           await proxy.upgradeTo(metaUserRolesUpgrade.address, {from: devOp});
@@ -187,19 +194,15 @@ contract ('Meta User Role Proxy upgradeable role', function (accounts) {
                       })
 
                     it("the new upgrade have behaviour and data was the previous call", async function() {
-                        this.metaUserRoles = await implMetaUserRolesUpgrade;
-
-
-
-
-                       var version = await implMetaEverestRoleUpgrade.getVersion();
+                       var implMetaUserRolesUpgradeRoleUpgrade = await MetaUserRolesUpgrade.at(proxy.address);
+                       var version = await implMetaUserRolesUpgradeRoleUpgrade.getVersion();
                        assert.equal(version.valueOf(), 0, "Version is incorrect");
-                       var superAdminResult = await implMetaEverestRoleUpgrade.getSuperAdminMock();
+                       var superAdminResult = await implMetaUserRolesUpgradeRoleUpgrade.getSuperAdminMock();
                        assert.equal(superAdmin,superAdmin, "superAdmin is incorrect");
                     })
 
                     //MetaUserRolesBehaviour(accounts);
-              })*/
+              })
 
 
          })
